@@ -1,13 +1,20 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Task } from '../types/todo';
+import { Task, TaskStatus } from '../types/todo';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
 function normalizeServerTask(t: any): Task {
+  let currentStatus: TaskStatus = 'todo';
+  if (t.status) {
+    currentStatus = t.status;
+  } else if (t.completed) {
+    currentStatus = 'completed';
+  }
+
   return {
     id: String(t.id),
     title: t.title,
-    completed: !!t.completed,
+    status: currentStatus,
     priority: t.priority,
     createdAt: t.createdAt ? Number(t.createdAt) : undefined,
   };
@@ -15,6 +22,7 @@ function normalizeServerTask(t: any): Task {
 
 export function useTodos() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [loadingAction, setLoadingAction] = useState<{ type: 'delete' | 'toggle' | 'update' | 'add'; id?: string } | null>(null);
 
   const fetchTasks = useCallback(async () => {
     try {
@@ -29,27 +37,24 @@ export function useTodos() {
 
   useEffect(() => {
     let mounted = true;
-
     void fetchTasks().then(() => {
       if (!mounted) return;
     });
-
     return () => {
       mounted = false;
     };
   }, [fetchTasks]);
 
   const addTask = useCallback(async (title: string) => {
+    setLoadingAction({ type: 'add' });
     try {
       const res = await fetch(`${API_BASE}/tasks`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, completed: false }),
+        body: JSON.stringify({ title, status: 'todo' }),
       });
 
-      if (!res.ok) {
-        throw new Error('Failed to add task');
-      }
+      if (!res.ok) throw new Error('Failed to add task');
 
       const created = await res.json();
       setTasks((prev) => [normalizeServerTask(created), ...prev]);
@@ -57,29 +62,33 @@ export function useTodos() {
     } catch (err) {
       console.error('Failed to add task:', err);
       return false;
+    } finally {
+      setLoadingAction(null);
     }
   }, []);
 
-  const toggleTask = useCallback(async (id: string) => {
-    const existing = tasks.find((t) => t.id === id);
-    if (!existing) return false;
+  const updateTaskStatus = useCallback(async (id: string, newStatus: TaskStatus) => {
+    setLoadingAction({ type: 'toggle', id });
     try {
       const res = await fetch(`${API_BASE}/tasks/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ completed: !existing.completed }),
+        body: JSON.stringify({ status: newStatus }),
       });
-      if (!res.ok) throw new Error('Failed to toggle task');
+      if (!res.ok) throw new Error('Failed to update task status');
       const updated = await res.json();
       setTasks((prev) => prev.map((t) => (t.id === id ? normalizeServerTask(updated) : t)));
       return true;
     } catch (err) {
-      console.error('Failed to toggle task:', err);
+      console.error('Failed to update task status:', err);
       return false;
+    } finally {
+      setLoadingAction(null);
     }
-  }, [tasks]);
+  }, []);
 
   const updateTaskTitle = useCallback(async (id: string, newTitle: string) => {
+    setLoadingAction({ type: 'update', id });
     try {
       const res = await fetch(`${API_BASE}/tasks/${id}`, {
         method: 'PATCH',
@@ -93,10 +102,13 @@ export function useTodos() {
     } catch (err) {
       console.error('Failed to update task title:', err);
       return false;
+    } finally {
+      setLoadingAction(null);
     }
   }, []);
 
   const deleteTask = useCallback(async (id: string) => {
+    setLoadingAction({ type: 'delete', id });
     try {
       const res = await fetch(`${API_BASE}/tasks/${id}`, { method: 'DELETE' });
       if (!res.ok) throw new Error('Failed to delete task');
@@ -105,13 +117,16 @@ export function useTodos() {
     } catch (err) {
       console.error('Failed to delete task:', err);
       return false;
+    } finally {
+      setLoadingAction(null);
     }
   }, []);
 
   return {
     tasks,
+    loadingAction,
     addTask,
-    toggleTask,
+    updateTaskStatus,
     updateTaskTitle,
     deleteTask,
   };

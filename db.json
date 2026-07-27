@@ -1,49 +1,54 @@
 {
   "tasks": [
     {
-      "id": "1",
-      "title": "Next.js App Router",
-      "completed": true
+      "title": "Task 1",
+      "status": "in-progress",
+      "id": "oAqrZcfSxno"
     },
     {
-      "id": "2",
-      "title": "Xây dựng giao diện Todo App",
-      "completed": false
+      "title": "Task 2",
+      "status": "todo",
+      "id": "3rawCGE1-bg"
     },
     {
-      "title": "đang làm",
-      "completed": false,
-      "id": "VeeW1TkjPqQ"
+      "title": "Task 3",
+      "status": "completed",
+      "id": "eBLHDuzw4Nk"
     },
     {
-      "title": "kiukukukuuuuuuu",
-      "completed": true,
-      "id": "y2MEzp01Dws"
+      "title": "Task 4",
+      "status": "completed",
+      "id": "vyTc7id9BXc"
     },
     {
-      "title": "chưa xong",
-      "completed": false,
-      "id": "9VclOE07liY"
+      "title": "Task 5",
+      "status": "todo",
+      "id": "bqqgeeWl6KM"
     },
     {
-      "title": "đang làm",
-      "completed": false,
-      "id": "at7p96ZEDfU"
+      "title": "Task 6",
+      "status": "in-progress",
+      "id": "d8u50w7nhmo"
     },
     {
-      "title": "okoko",
-      "completed": false,
-      "id": "eg_OoOKAaUs"
+      "title": "Task 7",
+      "status": "in-progress",
+      "id": "yyf4SEgWRWw"
     },
     {
-      "title": "công việc",
-      "completed": false,
-      "id": "IeHz0j6iAkw"
+      "title": "Task 8",
+      "status": "in-progress",
+      "id": "PCgZZjD6yW0"
     },
     {
-      "title": "công việc mới",
-      "completed": false,
-      "id": "V-He1Z7heNw"
+      "title": "Task 9",
+      "status": "todo",
+      "id": "CufALPmcpfs"
+    },
+    {
+      "title": "ok",
+      "status": "todo",
+      "id": "ijYFXFYzM24"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
