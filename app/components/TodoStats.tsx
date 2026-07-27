@@ -1,10 +1,11 @@
+import { memo } from "react";
 import { Task } from "../types/todo";
 
 interface TodoStatsProps {
   tasks: Task[];
 }
 
-export default function TodoStats({ tasks }: TodoStatsProps) {
+const TodoStats = memo(function TodoStats({ tasks }: TodoStatsProps) {
   if (tasks.length === 0) return null;
 
   const completedCount = tasks.filter((t) => t.completed).length;
@@ -17,4 +18,6 @@ export default function TodoStats({ tasks }: TodoStatsProps) {
       </span>
     </div>
   );
-}
+});
+
+export default TodoStats;

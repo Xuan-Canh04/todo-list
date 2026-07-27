@@ -7,13 +7,43 @@
     },
     {
       "id": "2",
-      "title": "Xây dựng giao diện Todo App bằng Tailwind",
+      "title": "Xây dựng giao diện Todo App",
       "completed": false
     },
     {
       "title": "đang làm",
       "completed": false,
       "id": "VeeW1TkjPqQ"
+    },
+    {
+      "title": "kiukukukuuuuuuu",
+      "completed": true,
+      "id": "y2MEzp01Dws"
+    },
+    {
+      "title": "chưa xong",
+      "completed": false,
+      "id": "9VclOE07liY"
+    },
+    {
+      "title": "đang làm",
+      "completed": false,
+      "id": "at7p96ZEDfU"
+    },
+    {
+      "title": "okoko",
+      "completed": false,
+      "id": "eg_OoOKAaUs"
+    },
+    {
+      "title": "công việc",
+      "completed": false,
+      "id": "IeHz0j6iAkw"
+    },
+    {
+      "title": "công việc mới",
+      "completed": false,
+      "id": "V-He1Z7heNw"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

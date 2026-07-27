@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import { Task } from "../types/todo";
 import TodoItem from "./TodoItem";
 
@@ -11,7 +11,7 @@ interface TodoListProps {
   onDelete: (id: string) => void;
 }
 
-export default function TodoList({
+const TodoList = memo(function TodoList({
   tasks,
   onToggle,
   onUpdate,
@@ -26,9 +26,7 @@ export default function TodoList({
   if (!isMounted) {
     return (
       <div className="space-y-3">
-        <p className="text-center text-slate-400 py-8 text-sm">
-          Đang tải...
-        </p>
+        <p className="text-center text-slate-400 py-8 text-sm">Đang tải...</p>
       </div>
     );
   }
@@ -56,4 +54,6 @@ export default function TodoList({
       ))}
     </div>
   );
-}
+});
+
+export default TodoList;
